@@ -2,17 +2,11 @@
 
 ## Provision Windows dev environment
 
-- Start a Windows instance with at least 70Gb disk space. To run Docker you will need to start a `metal` instance, e.g. `m5zn.metal` (didn't start), `z1d.metal` with the latest AMI: `Windows_Server-2019-English-Full-HyperV-2021.07.07` (or newer), non-metal instances and Workspaces don't allow to run Docker. Use spot persistent request.
-
-  - It looks like the EC2 becomes unreachable after Docker reboot.
-
-  - Also tried `Windows_Server-2019-English-Full-ContainersLatest-2021.07.07` on a regular EC2 -it doesn't work.
-
-  - If it's EC2, install `EC2Launch v2` <https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ec2launch-v2-install.html>
+- Start a Windows instance with at least 70Gb disk space. To run Docker you will need to start a `*.metal` instance, e.g. `m5zn.metal` or `z1d.metal` with the latest `Microsoft Windows Server 2019 Base` AMI.
 
 - Install AWS CLI <https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html> if needed.
 
-- Install Docker <https://docs.docker.com/docker-for-windows/install/> (not possible in Workspaces).
+- Install Docker <https://docs.docker.com/docker-for-windows/install/> (not possible in Workspaces). Docker will complain about obsolete Windows version - you can ignore it. A reboot will be needed during the installation.
 
 - Before reboot open _EC2 Launch Settings_ and check `Run EC2Launch on every boot`.
 
@@ -39,7 +33,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 cdk --version
 ```
 
-### VS 2019 Community
+### Install VS 2019 Community
 
 - Download a VS 2019 Community <https://visualstudio.microsoft.com/vs/community/>.
 
@@ -57,7 +51,7 @@ cdk --version
 
   - Click on the `+` icon and add a new profile: enter the necessary credentials.
 
-### VSCode
+### Install VS Code
 
 - Download and install VS Code <https://code.visualstudio.com/download>
 
