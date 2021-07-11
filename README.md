@@ -16,6 +16,13 @@
 
 - Install .NET 3.1 <https://dotnet.microsoft.com/download> (Lambda doesn't support .NET 5.0 yet).
 
+  - Install .NET Core Global Tool for Lambda and `Amazon.Lambda.Template`:
+
+    ```powershell
+    dotnet tool install -g Amazon.Lambda.Tools
+    dotnet new -i Amazon.Lambda.Templates
+    ```
+
 - Install Git <https://git-scm.com/download/win>
 
 ```powershell
@@ -87,7 +94,21 @@ netsh http add urlacl url="http://+:8888/" user="Everyone"
 
 - Open `http://localhost:8888/` in browser, you should see `Version 0.1`.
 
-- Copy the content of the `Debug` directory into an EC2 instance which can access SQS endpoint.
+- Now you can switch to the build of the Microservice.
+
+Adding code which will send the policies into the queue.
+
+- Add following packages as dependencies to the `SampleServer` project: `AWSSDK.SQS`, `AWSSDK.SimpleSystemsManagement`, `Newtonsoft.Json`, `RandomNameGeneratorLibrary`.
+
+TODO: add the code snippets:
+
+- read the SSM parameter;
+
+- send the data into the queue.
+
+Run the `\bin\Debug\SampleServer.exe` locally (ensure your AWS profile on the machine allows you to read the SSM parameter and send messages into SQS) and see how the policies are submitted to the queue.
+
+Switch to the VS2019 with the `Microservice` and open the `AWS Explorer`, expand the Lambda and double-click on `savePolicy`, then click `Logs` and and download the most recent log stream. You should see the polices send by the "monolith" processed by the Lambda.
 
 ## Cloud-native development with .NET Core (the "Microservice")
 
@@ -97,6 +118,7 @@ Bootstrap the CDK project for microservice:
 cd D:\Users\oleg\source\repos\
 mkdir microservice
 cdk init -l csharp
+cdk bootstrap
 cdk synth
 ```
 
@@ -111,6 +133,7 @@ dotnet add Microservice package Amazon.CDK.AWS.Lambda
 dotnet add Microservice package Amazon.CDK.AWS.Lambda.EventSources
 dotnet add Microservice package Amazon.CDK.AWS.DynamoDB
 dotnet add Microservice package Amazon.CDK.AWS.APIGateway
+dotnet add Microservice package Amazon.CDK.AWS.SSM
 ```
 
 or in VS2019 right-click on the project `Microservice`, then `Manage NuGet Packages..` and pick the packages listed above.
@@ -124,11 +147,19 @@ dotnet new globaljson --sdk-version 3.1.410 --force
 
 Create the Lambda project `SavePolicy` as described in <https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/lambda-creating-project-in-visual-studio.html> using `SQS` blueprint.
 
-Write the CDK code instantiating a SQS queue, a Lambda saving policies and a DynamoDB table.
+To see the Lambda handler name right-click on the `SavePolicy` project and choose `Publish tpo AWS Lambda..` - you will see the `Handler` in the bottom of the dialog.
+
+Write the CDK code instantiating a SQS queue, SSM Parameter, a Lambda saving policies and a DynamoDB table.
 
 TODO: paste the code snippets.
 
-Now you should get a stack with a SQS queue, a Lambda and a DynamoDB table. See if your stack builds and can be deployed:
+You can also debug the CDK code locally in VS2019. Set a breakpoint and start the debugger.
+
+You can also debug the Lambda code locally: set a breakpoint on the `foreach` statement in `Function.cs` of `SavePolicy`. Right-click on the `SavePolicy` project and in the opened browser pick `SQS` in the `Example Requests` drop-down, then click the `Execute Function`. After the execution the result and log output will be shown in the browser window. 
+
+You can configure the debug environment for the Lambda in `src\lambdas\SavePolicy\aws-lambda-tools-defaults.json`.
+
+Now you should get a stack with a SQS queue, SSM Parameter with the queue URL, a Lambda and a DynamoDB table. See if your stack builds and can be deployed:
 
 ```powershell
 cdk synth
@@ -136,6 +167,17 @@ cdk deploy
 ```
 
 You should get healthy CDK output ending with `Stack ARN`.
+
+Now you can switch to the "Monolith" and add the code which will send the entities into the queue.
+
+## Errata
+
+- If you fiddle with the name of the SSM Parameter, CDK may fail to deploy the changes, in this case you may want to redeploy the stack as:
+
+  ```powershell
+  cdk destroy
+  cdk deploy
+  ```
 
 ## Useful CDK commands
 
@@ -163,16 +205,30 @@ You should get healthy CDK output ending with `Stack ARN`.
 
 - How to Containerize .NET Applications and Run Them on Amazon Elastic Container Service (ECS) <https://www.youtube.com/watch?v=nGcQcgZywUM>
 
+- Lambda in .NET Core <https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html> 
+
+- Work with SQS with .NET AWS SDK <https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/sqs-apis-intro.html>
+
 ## TODO
 
 - SSM Parameter Store for SQS endpoint.
 
+- Create the EC2 (or ECS) role for the "monolith": SQS and SSM access <https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html>.
+
 - Pack the "monolith" into ECS.
-
-- CDK debugging.
-
-- Lambda debugging.
 
 - "Monolith" debugging.
 
-- Simple REACT/S3 (or Amplify) app to serve the content. 
+- UT for CDK
+
+- UT for Lambda:
+
+  - add the SQS function with `dotnet new lambda.SQS -n SavePolicy`
+
+  - more about UT <https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html>
+
+- CDK Debugging in VS Code.
+
+- Lambda Debugging in VS Code.
+
+- Simple REACT/S3 (or Amplify) app to serve the content.
