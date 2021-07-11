@@ -2,7 +2,7 @@
 
 ## Provision Windows dev environment
 
-- Start a Windows instance with at least 70Gb disk space. To run Docker you will need to start a `*.metal` instance, e.g. `m5zn.metal` or `z1d.metal` with the latest `Microsoft Windows Server 2019 Base` AMI.
+- Start a Windows instance with at least 70Gb disk space. To run Docker you will need to start a `*.metal` instance, e.g. `m5zn.metal` or `z1d.metal` with the latest `Microsoft Windows Server 2019 Base` AMI. Consider to use a spot instance with a permanent spot request to save costs.
 
 - Install AWS CLI <https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html> if needed.
 
