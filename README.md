@@ -147,7 +147,9 @@ dotnet --list-sdks
 dotnet new globaljson --sdk-version 3.1.410 --force
 ```
 
-Create the Lambda project `SavePolicy` as described in <https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/lambda-creating-project-in-visual-studio.html> using `SQS` blueprint.
+Create the Lambda project `SavePolicy` as described in <https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/lambda-creating-project-in-visual-studio.html>. Use the template `AWS Lambda Project with tests (.NET Core - C#)` and `SQS` blueprint in `<path>\src\lambdas`.
+
+We follow the best practices _Infrastructure code and application code lives in the same package_ as described in <https://aws.amazon.com/blogs/devops/best-practices-for-developing-cloud-applications-with-aws-cdk/> and keep IaC (CDK) and application (Lambda) code in the same repository.
 
 To see the Lambda handler name right-click on the `SavePolicy` project and choose `Publish tpo AWS Lambda..` - you will see the `Handler` in the bottom of the dialog.
 
