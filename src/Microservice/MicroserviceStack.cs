@@ -1,22 +1,31 @@
+using System.Collections.Generic;
+using System.Diagnostics;
+
 using Amazon.CDK;
 using Amazon.CDK.AWS.SQS;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.Lambda.EventSources;
 using Amazon.CDK.AWS.APIGateway;
 using Amazon.CDK.AWS.DynamoDB;
-using System.Collections.Generic;
-using System.Diagnostics;
+using Amazon.CDK.AWS.SSM;
 
 namespace Microservice
 {
     public class MicroserviceStack : Stack
     {
+        const string QUEUE_SSM_PARAMETER_NAME = "/monolith/policyQueueUrl";
+
         internal MicroserviceStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
            var queue = new Queue(this, "queue", new  QueueProps {
                 Fifo = true
            });
 
+            var ssmParam = new StringParameter(this, "policyQueueUrl", new StringParameterProps {
+                ParameterName = QUEUE_SSM_PARAMETER_NAME,
+                Description = "URL of the queue with policies",
+                StringValue = queue.QueueUrl
+            });
 
            var table = new Table(this, "policies", new TableProps {
                PartitionKey = new Attribute
@@ -64,7 +73,7 @@ namespace Microservice
             */
 
             // TODO: save the queue in Parameter Store an the writer will read it.
-            new CfnOutput(this, "Queue", new CfnOutputProps() { Value = queue.QueueArn });
+            new CfnOutput(this, "Queue", new CfnOutputProps() { Value = queue.QueueUrl });
             //new CfnOutput(this, "Api", new CfnOutputProps() { Value = api.Url });
         }
 
