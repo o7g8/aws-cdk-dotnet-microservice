@@ -65,7 +65,29 @@ cdk --version
 
 I recommend to save the AMI afterwards (.NET DEV).
 
+## What will we build
+
+We will build a "monolith" (a legacy application) producing some data and a "microservice" which will process the data. The "monolith" and "microservice" are decoupled with a SQS queue.
+
+The "monolith" is a .NET Framework based server which "saves" some entities (e.g. insurance policies). The monolith has also a HTTP endpoint on which it can report own version. We will make the "monolith" to send the entities to a SQS queue.
+
+We will develop the "micorservice" with .NET Core and will use CDK/.NET for IaC. The microservice will consist of the SQS queue, a Lambda which will save the entities in a DynamoDB table, and an API endpoint which will invoke another Lambda which will read the entities from the DynamoDB table.
+
 ## Development of a .NET Framework application (the "Monolith")
+
+- Open and build the project `SampleServer` in VS2019.
+
+- Open the port `8888`:
+
+```powershell
+netsh http add urlacl url="http://+:8888/" user="Everyone"
+```
+
+- Execute the `./bin/Debug/SampleServer.exe`, you should see messages `Saving policy` in the console.
+
+- Open `http://localhost:8888/` in browser, you should see `Version 0.1`.
+
+- Copy the content of the `Debug` directory into an EC2 instance which can access SQS endpoint.
 
 ## Cloud-native development with .NET Core (the "Microservice")
 
@@ -114,22 +136,6 @@ cdk deploy
 ```
 
 You should get healthy CDK output ending with `Stack ARN`.
-
-### .NET Framework development
-
-- Open and build the project `SampleServer` in VS2019.
-
-- Open the port `8888`:
-
-```powershell
-netsh http add urlacl url="http://+:8888/" user="Everyone"
-```
-
-- Execute the `./bin/Debug/SampleServer.exe`, you should see messages `Saving policy` in the console.
-
-- Open `http://localhost:8888/` in browser, you should see `Version 0.1`.
-
-- Copy the content of the `Debug` directory into an EC2 instance which can access SQS endpoint.
 
 ## Useful CDK commands
 
