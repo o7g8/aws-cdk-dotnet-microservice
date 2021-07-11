@@ -5,6 +5,7 @@ using Amazon.CDK.AWS.Lambda.EventSources;
 using Amazon.CDK.AWS.APIGateway;
 using Amazon.CDK.AWS.DynamoDB;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Microservice
 {
@@ -24,17 +25,18 @@ namespace Microservice
                     Type = AttributeType.STRING
                 }
            });
+
+            // see examples:
+            // https://github.com/DiddyApp/diddy-backend/blob/e2d0d798cee47e5bd84811cc6e34d9f2dd4529cd/src/lambdas/Goals/AddGoalFunction.cs
+            // https://github.com/DiddyApp/diddy-backend/blob/e2d0d798cee47e5bd84811cc6e34d9f2dd4529cd/src/infrastructure/Goals/LambdaResources.cs
+            // https://github.com/xerris/CDKApp/blob/cefa0d06632c8634a416e109eef659e4a1d34170/src/CdkApp/CdkAppStack.cs
+            // https://github.com/search?l=C%23&q=Runtime.DOTNET_CORE_3_1&type=Code
            
-           // see examples:
-           // https://github.com/DiddyApp/diddy-backend/blob/e2d0d798cee47e5bd84811cc6e34d9f2dd4529cd/src/lambdas/Goals/AddGoalFunction.cs
-           // https://github.com/DiddyApp/diddy-backend/blob/e2d0d798cee47e5bd84811cc6e34d9f2dd4529cd/src/infrastructure/Goals/LambdaResources.cs
-           // https://github.com/xerris/CDKApp/blob/cefa0d06632c8634a416e109eef659e4a1d34170/src/CdkApp/CdkAppStack.cs
-           // https://github.com/search?l=C%23&q=Runtime.DOTNET_CORE_3_1&type=Code
            var savePolicy = new Function(this, "savePolicy", new FunctionProps {
                Runtime = Runtime.DOTNET_CORE_3_1,
                FunctionName = "savePolicy",
                Handler = "SavePolicy::SavePolicy.Function::FunctionHandler",
-               Code = Code.FromAsset("src/lambdas/SavePolicy/bin/Debug/netcoreapp3.1"),
+               Code = Code.FromAsset(GetAssetPath("src/lambdas/SavePolicy/bin/Debug/netcoreapp3.1")),
                Timeout = Duration.Seconds(15),
                Environment = new Dictionary<string, string> {
                    ["TABLE"] = table.TableName
@@ -64,6 +66,13 @@ namespace Microservice
             // TODO: save the queue in Parameter Store an the writer will read it.
             new CfnOutput(this, "Queue", new CfnOutputProps() { Value = queue.QueueArn });
             //new CfnOutput(this, "Api", new CfnOutputProps() { Value = api.Url });
+        }
+
+        private string GetAssetPath(string path)
+        {
+            return Debugger.IsAttached
+                ? "../../../../../" + path
+                : path;
         }
     }
 }
