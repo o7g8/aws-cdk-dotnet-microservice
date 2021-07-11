@@ -108,6 +108,8 @@ TODO: add the code snippets:
 
 Run the `\bin\Debug\SampleServer.exe` locally (ensure your AWS profile on the machine allows you to read the SSM parameter and send messages into SQS) and see how the policies are submitted to the queue.
 
+You can also debug the application as usual in VS2019.
+
 Switch to the VS2019 with the `Microservice` and open the `AWS Explorer`, expand the Lambda and double-click on `savePolicy`, then click `Logs` and and download the most recent log stream. You should see the polices send by the "monolith" processed by the Lambda.
 
 ## Cloud-native development with .NET Core (the "Microservice")
@@ -211,14 +213,6 @@ Now you can switch to the "Monolith" and add the code which will send the entiti
 
 ## TODO
 
-- SSM Parameter Store for SQS endpoint.
-
-- Create the EC2 (or ECS) role for the "monolith": SQS and SSM access <https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html>.
-
-- Pack the "monolith" into ECS.
-
-- "Monolith" debugging.
-
 - UT for CDK
 
 - UT for Lambda:
@@ -226,6 +220,14 @@ Now you can switch to the "Monolith" and add the code which will send the entiti
   - add the SQS function with `dotnet new lambda.SQS -n SavePolicy`
 
   - more about UT <https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html>
+
+- "Monolith" deployment:
+
+  - on ECS or EC2;
+  
+  - create the EC2/ECS role with SQS and SSM access <https://docs.aws.amazon.com/cdk/api/latest/docs/aws-iam-readme.html>.
+
+  - Debugging of the "monolith": local container, remote on EC2, remote on ECS.
 
 - CDK Debugging in VS Code.
 
