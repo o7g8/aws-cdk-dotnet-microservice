@@ -162,3 +162,17 @@ You should get healthy CDK output ending with `Stack ARN`.
 - <https://aws.amazon.com/blogs/compute/applying-the-twelve-factor-app-methodology-to-serverless-applications/>
 
 - How to Containerize .NET Applications and Run Them on Amazon Elastic Container Service (ECS) <https://www.youtube.com/watch?v=nGcQcgZywUM>
+
+## TODO
+
+- SSM Parameter Store for SQS endpoint.
+
+- Pack the "monolith" into ECS.
+
+- CDK debugging.
+
+- Lambda debugging.
+
+- "Monolith" debugging.
+
+- Simple REACT/S3 (or Amplify) app to serve the content. 
