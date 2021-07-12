@@ -112,6 +112,8 @@ You can also debug the application as usual in VS2019.
 
 Switch to the VS2019 with the `Microservice` and open the `AWS Explorer`, expand the Lambda and double-click on `savePolicy`, then click `Logs` and and download the most recent log stream. You should see the polices send by the "monolith" processed by the Lambda.
 
+Now you can get back to the `Microservice` and add a capability to save the policies in DynamoDB.
+
 ## Cloud-native development with .NET Core (the "Microservice")
 
 Bootstrap the CDK project for microservice:
@@ -151,6 +153,8 @@ Create the Lambda project `SavePolicy` as described in <https://docs.aws.amazon.
 
 We follow the best practices _Infrastructure code and application code lives in the same package_ as described in <https://aws.amazon.com/blogs/devops/best-practices-for-developing-cloud-applications-with-aws-cdk/> and keep IaC (CDK) and application (Lambda) code in the same repository.
 
+In the `Test Explorer` you can run the UT provided for the Lambda function.
+
 To see the Lambda handler name right-click on the `SavePolicy` project and choose `Publish tpo AWS Lambda..` - you will see the `Handler` in the bottom of the dialog.
 
 Write the CDK code instantiating a SQS queue, SSM Parameter, a Lambda saving policies and a DynamoDB table.
@@ -159,7 +163,7 @@ TODO: paste the code snippets.
 
 You can also debug the CDK code locally in VS2019. Set a breakpoint and start the debugger.
 
-You can also debug the Lambda code locally: set a breakpoint on the `foreach` statement in `Function.cs` of `SavePolicy`. Right-click on the `SavePolicy` project and in the opened browser pick `SQS` in the `Example Requests` drop-down, then click the `Execute Function`. After the execution the result and log output will be shown in the browser window. 
+You can also debug the Lambda code locally: set a breakpoint on the `foreach` statement in `Function.cs` of `SavePolicy`. Right-click on the `SavePolicy` project and in the opened browser pick `SQS` in the `Example Requests` drop-down, then click the `Execute Function`. After the execution the result and log output will be shown in the browser window.
 
 You can configure the debug environment for the Lambda in `src\lambdas\SavePolicy\aws-lambda-tools-defaults.json`.
 
@@ -173,6 +177,10 @@ cdk deploy
 You should get healthy CDK output ending with `Stack ARN`.
 
 Now you can switch to the "Monolith" and add the code which will send the entities into the queue.
+
+### Persist the polices in DynamoDB
+
+In the `SavePolicy` add dependency on the package `AWSSDK.DynamoDBv2`. Consider to upgrade all NuGet packages in `SavePolicy` and `SavePolicy.Tests`.
 
 ## Errata
 
@@ -211,7 +219,13 @@ Now you can switch to the "Monolith" and add the code which will send the entiti
 
 - Lambda in .NET Core <https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html> 
 
-- Work with SQS with .NET AWS SDK <https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/sqs-apis-intro.html>
+- Work with SQS with AWS .NET SDK <https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/sqs-apis-intro.html>
+
+- DynamoDB in AWS .NET SDK <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CodeSamples.DotNet.html>
+
+- DynamoDB CRUD in .NET <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CRUDHighLevelExample1.html>
+
+- DynamoDB query <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBContext.QueryScan.html>
 
 ## TODO
 
