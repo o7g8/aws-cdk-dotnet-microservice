@@ -55,27 +55,30 @@ namespace Microservice
            table.GrantWriteData(savePolicy);
             table.Grant(savePolicy, "dynamodb:DescribeTable");
 
-            /*
            var readPolicy = new Function(this, "readPolicy", new FunctionProps {
                Runtime = Runtime.DOTNET_CORE_3_1,
                FunctionName = "readPolicy",
                Handler = "ReadPolicy::ReadPolicy.Function::FunctionHandler",
-               Code = Code.FromAsset("lambdas/ReadPolicy/publish"),
+               Code = Code.FromAsset(GetAssetPath("src/lambdas/ReadPolicy/bin/Debug/netcoreapp3.1")),
                Timeout = Duration.Seconds(15),
                Environment = new Dictionary<string, string> {
                    ["TABLE"] = table.TableName
                }
            });
            table.GrantReadData(readPolicy);
+            table.Grant(readPolicy, "dynamodb:DescribeTable");
 
-           var api = new LambdaRestApi(this, "PoliciesAPI", new LambdaRestApiProps {
+            var api = new LambdaRestApi(this, "PoliciesAPI", new LambdaRestApiProps {
                 Handler = readPolicy,
+                
             });
-            */
+            // see https://docs.aws.amazon.com/cdk/api/latest/docs/aws-apigateway-readme.html
+            var apiPolicies = api.Root.AddResource("policies");
+            var apiPolicy = apiPolicies.AddResource("{owner}");
+            apiPolicy.AddMethod("GET");
 
-            // TODO: save the queue in Parameter Store an the writer will read it.
             new CfnOutput(this, "Queue", new CfnOutputProps() { Value = queue.QueueUrl });
-            //new CfnOutput(this, "Api", new CfnOutputProps() { Value = api.Url });
+            new CfnOutput(this, "Api", new CfnOutputProps() { Value = api.Url });
         }
 
         private string GetAssetPath(string path)

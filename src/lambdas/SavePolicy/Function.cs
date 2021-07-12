@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ namespace SavePolicy
     public class Function
     {
         // TODO: make it UT friendly https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html
+        // https://stackoverflow.com/questions/66710616/how-to-mock-dynamodbcontext-batchwrite-for-unit-testing-in-net
         internal static AmazonDynamoDBClient client = new AmazonDynamoDBClient();
         internal static DynamoDBContext dbContext = new DynamoDBContext(client);
         /// <summary>
@@ -48,6 +50,14 @@ namespace SavePolicy
 
             try
             {
+                /*
+                // soft-typed approach with a table name which can be determined in run-time. can use automapper to build the document.
+                var table = Table.LoadTable(client, "MicroserviceStack-policies6B0F0152-1HP5UY8WY9IZB");
+                await table.PutItemAsync(new Document {
+                    { "field", "value" }
+                });
+                */
+
                 var policy = JsonConvert.DeserializeObject<Policy>(message.Body);
                 await dbContext.SaveAsync(policy);
             } catch (Exception e)
