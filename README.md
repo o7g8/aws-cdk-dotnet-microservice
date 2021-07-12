@@ -182,6 +182,14 @@ Now you can switch to the "Monolith" and add the code which will send the entiti
 
 In the `SavePolicy` add dependency on the package `AWSSDK.DynamoDBv2`. Consider to upgrade all NuGet packages in `SavePolicy` and `SavePolicy.Tests`.
 
+### Retrieve the policies from DynamoDB
+
+Test:
+
+```powershell
+curl https://<api-url>/prod/policies/<first-name%20last-name>
+```
+
 ## Errata
 
 - If you fiddle with the name of the SSM Parameter, CDK may fail to deploy the changes, in this case you may want to redeploy the stack as:
@@ -227,13 +235,15 @@ In the `SavePolicy` add dependency on the package `AWSSDK.DynamoDBv2`. Consider 
 
 - DynamoDB query <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBContext.QueryScan.html>
 
+- AWS .NET Dojo <https://dotnet-developer-dojo.workshop.aws/lab6-cdk/hello-api-gateway.html>\
+
+- Webinar code <https://github.com/serkanbingol/aws-webinars/tree/16a6989329b1ecfd37ab4cbbfcb1dc7eddbf0074/developer-summit-2020-cdk>
+
 ## TODO
 
 - UT for CDK
 
 - UT for Lambda:
-
-  - add the SQS function with `dotnet new lambda.SQS -n SavePolicy`
 
   - more about UT <https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html>
 
