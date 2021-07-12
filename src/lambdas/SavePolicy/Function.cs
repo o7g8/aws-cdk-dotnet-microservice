@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
-
+using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -14,6 +13,9 @@ namespace SavePolicy
 {
     public class Function
     {
+        // TODO: make it UT friendly https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html
+        internal static AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+        internal static DynamoDBContext dbContext = new DynamoDBContext(client);
         /// <summary>
         /// Default constructor. This constructor is used by Lambda to construct the instance. When invoked in a Lambda environment
         /// the AWS credentials will come from the IAM role associated with the function and the AWS region will be set to the
@@ -44,8 +46,26 @@ namespace SavePolicy
         {
             context.Logger.LogLine($"Processed message {message.Body}");
 
-            // TODO: Do interesting work based on the new message
+            try
+            {
+                var policy = JsonConvert.DeserializeObject<Policy>(message.Body);
+                await dbContext.SaveAsync(policy);
+            } catch (Exception e)
+            {
+                context.Logger.LogLine($"ERROR: {e.Message}");
+            }
             await Task.CompletedTask;
         }
+    }
+
+    // TODO: Find out how to get the table name in the runtime.
+    [DynamoDBTable("MicroserviceStack-policies6B0F0152-1HP5UY8WY9IZB")]
+    public class Policy
+    {
+        [DynamoDBHashKey] //Partition key
+        public Guid PolicyId { get; set; }
+
+        [DynamoDBProperty]
+        public string PolicyOwner { get; set; }
     }
 }

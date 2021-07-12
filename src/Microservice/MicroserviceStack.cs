@@ -53,6 +53,7 @@ namespace Microservice
                Events = new[] { new SqsEventSource(queue) }
            });
            table.GrantWriteData(savePolicy);
+            table.Grant(savePolicy, "dynamodb:DescribeTable");
 
             /*
            var readPolicy = new Function(this, "readPolicy", new FunctionProps {
