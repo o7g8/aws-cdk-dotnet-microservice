@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 
-using Nancy;
-using Nancy.Hosting.Self;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Amazon.SimpleSystemsManagement;
 using Amazon.SimpleSystemsManagement.Model;
+using Nancy;
+using Nancy.Hosting.Self;
 using Newtonsoft.Json;
 using RandomNameGeneratorLibrary;
 
@@ -24,6 +24,7 @@ namespace SampleServer
     {
         const string QUEUE_SSM_PARAMETER_NAME = "/monolith/policyQueueUrl";
         static PersonNameGenerator personGenerator = new PersonNameGenerator();
+        static Random random = new Random();
         static string queueUrl;
         static AmazonSQSClient queue;
 
@@ -54,10 +55,18 @@ namespace SampleServer
         private static void savePolicy(object state)
         {
             var policy = new Policy {
-                PolicyId = Guid.NewGuid(),
                 PolicyOwner = personGenerator.GenerateRandomFirstAndLastName(),
+                CprNo = GenerateCprNo()
             };
             SendMessage(policy);
+        }
+
+        private static string GenerateCprNo()
+        {
+            var daysOld = random.Next(20 * 365, 100 * 365);
+            var bday = DateTime.Today.AddDays(-daysOld);
+            var seq = random.Next(1000, 9999);
+            return bday.ToString("ddMMyy") + "-" + seq.ToString();
         }
 
         private static void SendMessage(Policy policy)
@@ -66,7 +75,7 @@ namespace SampleServer
             var resp = queue.SendMessage(new SendMessageRequest {
                 QueueUrl = queueUrl,
                 MessageGroupId = "policies",
-                MessageDeduplicationId = policy.PolicyId.ToString(),
+                MessageDeduplicationId = policy.CprNo,
                 MessageBody = body
             });
             Console.WriteLine($"Sent {body}, status: {resp.HttpStatusCode}");
@@ -74,7 +83,7 @@ namespace SampleServer
     }
 
     public class Policy {
-        public Guid PolicyId { get; set; }
         public string PolicyOwner { get; set; }
+        public string CprNo { get; set; }
     }
 }

@@ -30,16 +30,15 @@ namespace Microservice
            var table = new Table(this, "policies", new TableProps {
                PartitionKey = new Attribute
                 {
-                    Name = "PolicyId",
+                    Name = "CprNo",
                     Type = AttributeType.STRING
-                }
+                },
+               SortKey = new Attribute
+               {
+                   Name = "PolicyOwner",
+                   Type = AttributeType.STRING
+               }
            });
-
-            // see examples:
-            // https://github.com/DiddyApp/diddy-backend/blob/e2d0d798cee47e5bd84811cc6e34d9f2dd4529cd/src/lambdas/Goals/AddGoalFunction.cs
-            // https://github.com/DiddyApp/diddy-backend/blob/e2d0d798cee47e5bd84811cc6e34d9f2dd4529cd/src/infrastructure/Goals/LambdaResources.cs
-            // https://github.com/xerris/CDKApp/blob/cefa0d06632c8634a416e109eef659e4a1d34170/src/CdkApp/CdkAppStack.cs
-            // https://github.com/search?l=C%23&q=Runtime.DOTNET_CORE_3_1&type=Code
            
            var savePolicy = new Function(this, "savePolicy", new FunctionProps {
                Runtime = Runtime.DOTNET_CORE_3_1,
@@ -70,11 +69,10 @@ namespace Microservice
 
             var api = new LambdaRestApi(this, "PoliciesAPI", new LambdaRestApiProps {
                 Handler = readPolicy,
-                
             });
             // see https://docs.aws.amazon.com/cdk/api/latest/docs/aws-apigateway-readme.html
             var apiPolicies = api.Root.AddResource("policies");
-            var apiPolicy = apiPolicies.AddResource("{owner}");
+            var apiPolicy = apiPolicies.AddResource("{cprno}");
             apiPolicy.AddMethod("GET");
 
             new CfnOutput(this, "Queue", new CfnOutputProps() { Value = queue.QueueUrl });
