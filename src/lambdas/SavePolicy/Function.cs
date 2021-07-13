@@ -19,7 +19,9 @@ namespace SavePolicy
         // TODO: make it UT friendly https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html
         // https://stackoverflow.com/questions/66710616/how-to-mock-dynamodbcontext-batchwrite-for-unit-testing-in-net
         internal static AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+        internal static Table table = Table.LoadTable(client, Environment.GetEnvironmentVariable(TABLE));
         //internal static DynamoDBContext dbContext = new DynamoDBContext(client);
+
         /// <summary>
         /// Default constructor. This constructor is used by Lambda to construct the instance. When invoked in a Lambda environment
         /// the AWS credentials will come from the IAM role associated with the function and the AWS region will be set to the
@@ -52,8 +54,7 @@ namespace SavePolicy
 
             try
             {
-                var policy =  JsonSerializer.Deserialize<Policy>(message.Body);// JsonSerializer. //JsonConvert.DeserializeObject<Policy>(message.Body);
-                var table = Table.LoadTable(client, Environment.GetEnvironmentVariable(TABLE));
+                var policy = JsonSerializer.Deserialize<Policy>(message.Body);
                 await table.PutItemAsync(new Document {
                     { "CprNo", policy.CprNo },
                     { "PolicyOwner", policy.PolicyOwner }
