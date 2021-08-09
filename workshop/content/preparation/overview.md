@@ -2,10 +2,8 @@
 title: "Overview"
 date: 2021-08-09T17:34:33+02:00
 draft: false
-weight: weight = 5
+weight: 10
 ---
-
-# Overview
 
 You need to decide where your .NET development environment will be provisioned. You have following options:
 
