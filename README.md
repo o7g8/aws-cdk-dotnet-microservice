@@ -187,8 +187,22 @@ In the `SavePolicy` add dependency on the package `AWSSDK.DynamoDBv2`. Consider 
 Test:
 
 ```powershell
-curl https://<api-url>/prod/policies/<first-name%20last-name>
+curl https://<api-url>/prod/policies/<cprno>
 ```
+
+### Enable X-Ray
+
+See <https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html>
+
+Do <https://docs.aws.amazon.com/lambda/latest/dg/csharp-tracing.html>:
+
+- enable tracing;
+
+- install the package and paste the code
+
+- grant `lambda:GetAccountSettings` to the Lambda role.
+
+Observe that consumed RAM went up from 90Mb to 110Mb and execution time from ~30ms to 200-300ms. To my surprise it didn't add DynamoDB into the map. No added value at all compared to the checkbox.
 
 ## Errata
 
@@ -224,6 +238,8 @@ curl https://<api-url>/prod/policies/<first-name%20last-name>
 - <https://aws.amazon.com/blogs/compute/applying-the-twelve-factor-app-methodology-to-serverless-applications/>
 
 - How to Containerize .NET Applications and Run Them on Amazon Elastic Container Service (ECS) <https://www.youtube.com/watch?v=nGcQcgZywUM>
+
+- .NET Framework CI/CD for Amazon ECS <https://aws.amazon.com/quickstart/architecture/dotnetfx-ecs-cicd/>
 
 - Lambda in .NET Core <https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html> 
 
