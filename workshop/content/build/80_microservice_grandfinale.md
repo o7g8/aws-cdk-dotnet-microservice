@@ -55,6 +55,21 @@ You will get output similar to:
 {"CprNo":"060676-6581","PolicyOwner":"Star Prause"}
 ```
 
-Success! Congratulations with completion of end-to-end development of a .NET-based microservice without leaving Visual Studio and PowerShell.
+Success! Congratulations with the completion of end-to-end development of a .NET-based microservice without leaving Visual Studio and PowerShell.
 
 You can also start the monolith in a separate PowerShell and let it send some new policies to the cloud, and then query them via the API endpoint.
+
+As an additional exercise you can inspect Lambda logs: go to  _AWS Explorer_ (Ctrl+K, A), expand _AWS Lambda_ and double-click on `savePolicy`, then go to _Logs_ and click on the green "download" button close to one of the log entries:
+
+![logs](80_microservice_lambda_logs.png)
+
+You will get a Notepad with logs similar to:
+
+```text
+2021-08-10 21:19:03: START RequestId: b8006252-2f24-58c3-b0cb-3bdefc43fa81 Version: $LATEST
+2021-08-10 21:19:03: Processed message {"PolicyOwner":"Veola Binkowski","CprNo":"281256-7324"}
+2021-08-10 21:19:12: Processed message {"PolicyOwner":"Star Prause","CprNo":"060676-6581"}
+2021-08-10 21:19:13: Processed message {"PolicyOwner":"Lanny Haverfield","CprNo":"160466-9067"}
+2021-08-10 21:19:13: END RequestId: b8006252-2f24-58c3-b0cb-3bdefc43fa81
+2021-08-10 21:19:13: REPORT RequestId: b8006252-2f24-58c3-b0cb-3bdefc43fa81	Duration: 9666.80 ms	Billed Duration: 9667 ms	Memory Size: 128 MB	Max Memory Used: 98 MB	Init Duration: 186.37 ms	
+```
