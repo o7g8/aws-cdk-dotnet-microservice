@@ -78,7 +78,7 @@ We will build a "monolith" (a legacy application) producing some data and a "mic
 
 The "monolith" is a .NET Framework based server which "saves" some entities (e.g. insurance policies). The monolith has also a HTTP endpoint on which it can report own version. We will make the "monolith" to send the entities to a SQS queue.
 
-We will develop the "micorservice" with .NET Core and will use CDK/.NET for IaC. The microservice will consist of the SQS queue, a Lambda which will save the entities in a DynamoDB table, and an API endpoint which will invoke another Lambda which will read the entities from the DynamoDB table.
+We will develop the "microservice" with .NET Core and will use CDK/.NET for IaC. The microservice will consist of the SQS queue, a Lambda which will save the entities in a DynamoDB table, and an API endpoint which will invoke another Lambda which will read the entities from the DynamoDB table.
 
 ## Development of a .NET Framework application (the "Monolith")
 
