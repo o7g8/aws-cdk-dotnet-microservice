@@ -110,4 +110,4 @@ Now you can connect the dots between the CDK code in `MicroserviceStack.cs` and 
 
 * every SQS message is processed in the method `ProcessMessageAsync()`: the message is deserialized into `Policy` object and then saved into the DynamoDB `table`.
 
-* you can see the Lambda handler if you right-click on the project _SavePolicy -> Publish to AWS Lambda..._ - look into the bottom of the dialog there is a field `Handler`. The value was used in the `savePolicy.Handler` property in `MicroserviceStack.cs`.  
+* you can see the Lambda handler `SavePolicy::SavePolicy.Function::FunctionHandler` if you right-click on the project _SavePolicy -> Publish to AWS Lambda..._ - look into the bottom of the dialog there is a field `Handler`. The value was used in the `savePolicy.Handler` property in `MicroserviceStack.cs`.  Don't publish the Lambda - we will do it using CDK later.
