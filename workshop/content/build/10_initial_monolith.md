@@ -1,5 +1,5 @@
 ---
-title: "Initial Monolith"
+title: "Monolith: the starting point"
 date: 2021-08-10T10:43:54+02:00
 draft: false
 weight: 10
