@@ -15,13 +15,28 @@ weight: 30
 
   - .NET cross-platform development.
 
+- Setup a IAM user which you will use in the workshop:
+
+  - In the AWS Console go to _IAM > Users > Add Users_
+
+  - Set _User name_ to `dev` and check _Programmatic access_, click _Next.._
+
+  - In the _Set permissions_ click _Attach existing policies directly_
+
+  - In the field _Filter policies_ type `Admin` and pick the `AdministratorAccess` policy. Click _Next.._.
+
+  - Kee the tags empty. Click _Next.._.
+
+  - Click _Create user_.
+
+  - Click the _Download .csv_ to save the user credentials locally. Save the CSV file.
+
 - Install [AWS Toolkit for Visual Studio 2017 and 2019](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.AWSToolkitforVisualStudio2017), then:
 
   - Go to _View -> AWS Explorer (Ctrl+K, A)_;
 
-  - Click on the `+` icon and add a new profile: enter the AWS credentials.
+  - Click on the `+` icon and add a new profile: set the _Profile name_ to `default`, and enter the AWS credentials from the CSV file you have downloaded earlier (use the 3rd and 4th fields: _Access key ID_ and _Secret access key_ respectively).
 
-![AWS Extension](aws_vs_plugin.png)
+  ![AWS Extension](aws_vs_plugin.png)
 
-  TODO: describe the process of obtaining the credentials in EE and in the own account (closer to AWS CLI - register profile there).
-
+  - Click _OK_ and the extension should successfully connect to to AWS, so you will see a list of AWS services as it's shown on the picture above.

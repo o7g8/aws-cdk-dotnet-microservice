@@ -102,6 +102,8 @@ Then run the `./bin/Debug/SampleServer.exe` and you should see output similar to
 
 ![output](10_monolith_output.png)
 
+Open `http://localhost:8888/` in the browser, you should see `Version 0.1`.
+
 We got our .NET Framework-based "monolith" working. We want to make the `Policy` data processed by the "monolith" available for a Cloud-based micro-service. So let's move on to building the micro-service.
 
 
