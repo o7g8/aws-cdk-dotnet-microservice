@@ -8,7 +8,7 @@ We will add to the "monolith" a capability to send the insurance policy data to 
 
 Here is the target architecture:
 
-[[architecture.png|Architecture]]
+[Architecture](architecture.png)
 
 The repo contains submodules therefore clone it with:
 
