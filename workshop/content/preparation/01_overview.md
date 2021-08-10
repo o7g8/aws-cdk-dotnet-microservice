@@ -15,5 +15,5 @@ Please keep in mind, that a non-`metal` EC2 and Workspaces machines won't allow 
 
 Therefore if you want to have Docker, you will need to install it on your local machine or on a `metal` EC2 (e.g. `m5zn.metal` or `z1d.metal`).
 
-In case you go for an EC2, consider to use a spot instance with a permanent spot request to save costs. And use the latest `Microsoft Windows Server 2019 Base` AMI.
+In case you go for an EC2, consider to use a spot instance with a permanent spot request to save costs. And use the latest `Microsoft Windows Server 2019 Base` AMI. I also recommend to save the AMI with the provisioned software.
 

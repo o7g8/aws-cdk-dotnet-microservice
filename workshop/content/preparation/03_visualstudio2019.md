@@ -15,7 +15,7 @@ weight: 30
 
   - .NET cross-platform development.
 
-- Install [AWS Toolkit for Visual Studio 2017 and 2019](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.AWSToolkitforVisualStudio2017):
+- Install [AWS Toolkit for Visual Studio 2017 and 2019](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.AWSToolkitforVisualStudio2017), then:
 
   - Go to _View -> AWS Explorer (Ctrl+K, A)_;
 
