@@ -4,6 +4,8 @@ date: 2021-08-10T20:43:03+02:00
 draft: true
 ---
 
+* PowerPoint deck: CDK, SQS, Lambda, DynamoDB, API GW.
+
 * Full-fledged debugging of Lambda
 
 * UT for CDK
