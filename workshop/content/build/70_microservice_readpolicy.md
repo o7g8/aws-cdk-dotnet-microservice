@@ -141,4 +141,6 @@ namespace ReadPolicy
 }
 ```
 
+IMPORTANT: Comment out the `TestToUpperFunction()` test in the `FunctionTest.cs` in the project `ReadPolicy.Tests`.
+
 Build the project and ensure there are no errors.

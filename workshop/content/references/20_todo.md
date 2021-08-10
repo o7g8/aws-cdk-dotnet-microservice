@@ -6,6 +6,8 @@ draft: true
 
 * PowerPoint deck: CDK, SQS, Lambda, DynamoDB, API GW.
 
+* CI/CD pipeline for the microservice in CDK.
+
 * Full-fledged debugging of Lambda
 
 * UT for CDK
@@ -16,5 +18,4 @@ draft: true
 
 * X-Ray
 
-* Containerize the "monolith"
-
+* Containerize the "monolith" (evt. CI/CD and CDK).
