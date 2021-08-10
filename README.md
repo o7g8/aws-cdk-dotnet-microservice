@@ -121,6 +121,7 @@ Bootstrap the CDK project for microservice:
 ```powershell
 cd D:\Users\oleg\source\repos\
 mkdir microservice
+cd .\microservice\
 cdk init -l csharp
 cdk bootstrap
 cdk synth
