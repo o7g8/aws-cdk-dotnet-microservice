@@ -1,5 +1,5 @@
 ---
-title: "Bootstrap the Microservice"
+title: "Bootstrap the Microservice CDK project"
 date: 2021-08-10T12:25:08+02:00
 draft: false
 weight: 20
@@ -30,17 +30,3 @@ dotnet new globaljson --sdk-version 3.1.410 --force
 Open the solution file `./src/Microservice.sln` in VS2019, open the `Microservice` project properties and ensure the project uses `.NET Core 3.1` as the _Target framework_.
 
 Build the project and ensure the build succeeds.
-
-In our microservice we will use following AWS services: SQS, Lambda, DynamoDB, API Gateway and AWS Systems Manager (SSM), therefore we need to add respective CDK packages into the `Microservice` project. You can do it in CLI with `dotnet` command:
-
-```powershell
-cd src
-dotnet add Microservice package Amazon.CDK.AWS.SQS
-dotnet add Microservice package Amazon.CDK.AWS.Lambda
-dotnet add Microservice package Amazon.CDK.AWS.Lambda.EventSources
-dotnet add Microservice package Amazon.CDK.AWS.DynamoDB
-dotnet add Microservice package Amazon.CDK.AWS.APIGateway
-dotnet add Microservice package Amazon.CDK.AWS.SSM
-```
-
-or in VS2019 UI: right-click on the project `Microservice`, then `Manage NuGet Packages..` and pick the packages listed above.
