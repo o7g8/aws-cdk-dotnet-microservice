@@ -39,4 +39,4 @@ weight: 30
 
   ![AWS Extension](aws_vs_plugin.png)
 
-  - Click _OK_ and the extension should successfully connect to to AWS, so you will see a list of AWS services as it's shown on the picture above.
+  - Click _OK_ and the extension should successfully connect to AWS, so you will see a list of AWS services as it's shown on the picture above.
