@@ -7,7 +7,7 @@ weight: 20
 
 Let's start building our microservice and its Infrastructure as Code using CDK: both the microservice code and IaC will be in the same CDK project.
 
-We follow the best practices _Infrastructure code and application code lives in the same package_ as described in <https://aws.amazon.com/blogs/devops/best-practices-for-developing-cloud-applications-with-aws-cdk/> and keep the IaC (CDK) and application (Lambda) code in the same repository.
+We follow the best practice _Infrastructure code and application code lives in the same package_ as described in [Best practices for developing cloud applications with AWS CDK](https://aws.amazon.com/blogs/devops/best-practices-for-developing-cloud-applications-with-aws-cdk/) and keep the IaC (CDK) and business logic (Lambdas) code in the same solution.
 
 Bootstrap the CDK/.NET project:
 
@@ -18,6 +18,8 @@ cdk init -l csharp
 cdk bootstrap
 cdk synth
 ```
+
+You should see process of CDK bootstrapping and in the end some output resembling a CloudFormation template.
 
 Set the default .NET Core SDK version to 3.1.: list available SDK versions and pin the project to the available version of `3.1` (in my case it's `3.1.140`):
 
