@@ -105,4 +105,6 @@ You can also expand the _AWS CloudFormation_ node and check `MicroserviceStack` 
 
 You are also welcome check your newly created resources in AWS Console.
 
-So far so good: we got our SQS queue, now it's time to make our "monolith" to send some insurance policies into the queue!
+So far so good: we got our SQS queue, now it's time to make our "monolith" to send some insurance policies into the queue.
+
+But before that let us see how we can debug the CDK IaC.
