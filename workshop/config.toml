@@ -1,0 +1,37 @@
+RelativeURLs=true
+CanonifyURLs=true
+languageCode = "en-US"
+defaultContentLanguage = "en"
+
+title = ".NET Development on AWS"
+theme = "hugo-theme-learn"
+metaDataFormat = "yaml"
+defaultContentLanguageInSubdir= true
+
+uglyurls = true
+sectionPagesMenu = "main"
+pygmentsCodeFences = true
+pygmentsStyle = "monokai"
+
+[params]
+  author = "AWS"
+  disableBreadcrumb = false
+  disableNextPrev = false
+  themeVariant = "aws"
+  disableSearch = false
+  disableMermaid = true
+  disableAssetsBusting = true
+  disableLanguageSwitchingButton = true
+  disableShortcutsTitle = true
+  disableInlineCopyToClipBoard = true
+  disableLandingPageButton = true
+
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+[markup]
+  defaultMarkdownHandler = "goldmark"
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+

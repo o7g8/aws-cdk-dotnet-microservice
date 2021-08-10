@@ -78,7 +78,7 @@ We will build a "monolith" (a legacy application) producing some data and a "mic
 
 The "monolith" is a .NET Framework based server which "saves" some entities (e.g. insurance policies). The monolith has also a HTTP endpoint on which it can report own version. We will make the "monolith" to send the entities to a SQS queue.
 
-We will develop the "micorservice" with .NET Core and will use CDK/.NET for IaC. The microservice will consist of the SQS queue, a Lambda which will save the entities in a DynamoDB table, and an API endpoint which will invoke another Lambda which will read the entities from the DynamoDB table.
+We will develop the "microservice" with .NET Core and will use CDK/.NET for IaC. The microservice will consist of the SQS queue, a Lambda which will save the entities in a DynamoDB table, and an API endpoint which will invoke another Lambda which will read the entities from the DynamoDB table.
 
 ## Development of a .NET Framework application (the "Monolith")
 
@@ -121,6 +121,7 @@ Bootstrap the CDK project for microservice:
 ```powershell
 cd D:\Users\oleg\source\repos\
 mkdir microservice
+cd .\microservice\
 cdk init -l csharp
 cdk bootstrap
 cdk synth
@@ -187,8 +188,22 @@ In the `SavePolicy` add dependency on the package `AWSSDK.DynamoDBv2`. Consider 
 Test:
 
 ```powershell
-curl https://<api-url>/prod/policies/<first-name%20last-name>
+curl https://<api-url>/prod/policies/<cprno>
 ```
+
+### Enable X-Ray
+
+See <https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html>
+
+Do <https://docs.aws.amazon.com/lambda/latest/dg/csharp-tracing.html>:
+
+- enable tracing;
+
+- install the package and paste the code
+
+- grant `lambda:GetAccountSettings` to the Lambda role.
+
+Observe that consumed RAM went up from 90Mb to 110Mb and execution time from ~30ms to 200-300ms. To my surprise it didn't add DynamoDB into the map. No added value at all compared to the checkbox.
 
 ## Errata
 
@@ -224,6 +239,8 @@ curl https://<api-url>/prod/policies/<first-name%20last-name>
 - <https://aws.amazon.com/blogs/compute/applying-the-twelve-factor-app-methodology-to-serverless-applications/>
 
 - How to Containerize .NET Applications and Run Them on Amazon Elastic Container Service (ECS) <https://www.youtube.com/watch?v=nGcQcgZywUM>
+
+- .NET Framework CI/CD for Amazon ECS <https://aws.amazon.com/quickstart/architecture/dotnetfx-ecs-cicd/>
 
 - Lambda in .NET Core <https://docs.aws.amazon.com/lambda/latest/dg/csharp-package-cli.html> 
 
