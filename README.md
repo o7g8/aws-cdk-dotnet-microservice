@@ -17,3 +17,13 @@ git clone --recurse-submodules <url>
 ```
 
 Install [Hugo](http://gohugo.io), serve the workshop content as described in [./workshop](./workshop) and proceed with the workshop instructions.
+
+If you just want to see the "end results" of the workshop then look into the source code of the microservice [./src](./src) and into source code of the "monolith" [./SampleServer](./SampleServer).
+
+First deploy the microservice and then start the "monolith". Then query the insurance policies via API Gateway using URL displayed by CDK output after microservice deployment:
+
+```text
+https://my-url.com/prod/policies/<cpr-no>
+```
+
+Take the actual `<cpr-no>` from the "monolith" output (e.g. `060676-6581`).
